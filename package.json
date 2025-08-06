@@ -6,7 +6,12 @@
   "scripts": {
     "build": "pnpm -r build",
     "dev": "pnpm -r dev",
-    "start": "pnpm -r start"
+    "start": "pnpm -r start",
+    "db:generate": "pnpm --filter server db:generate",
+    "db:migrate": "pnpm --filter server db:migrate",
+    "db:seed": "pnpm --filter server db:seed",
+    "db:start": "pnpm --filter server db:start",
+    "db:stop": "pnpm --filter server db:stop"
   },
   "keywords": [],
   "author": "",

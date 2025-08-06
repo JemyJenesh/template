@@ -1,3 +1,5 @@
+import { auth } from "@/lib/auth";
+import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import express, { type Express } from "express";
 
@@ -5,6 +7,9 @@ export const createServer = (): Express => {
   const app = express();
 
   app.use(cors());
+
+  app.all("/api/auth/{*any}", toNodeHandler(auth));
+
   app.use(express.json());
 
   app.get("/", (_, res) => {
