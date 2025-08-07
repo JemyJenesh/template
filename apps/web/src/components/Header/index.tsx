@@ -1,5 +1,6 @@
+import { ColorSchemeToggle } from "@/components/ColorSchemeToggle";
 import { UserButton } from "@/components/UserButton";
-import { Burger, Title } from "@mantine/core";
+import { Burger, Flex, Title } from "@mantine/core";
 import { IconMagnetFilled } from "@tabler/icons-react";
 import classes from "./style.module.css";
 
@@ -19,7 +20,10 @@ export function Header({ opened = false, toggle }: HeaderProps) {
         <Title order={3}>Template</Title>
       </div>
 
-      <UserButton />
+      <Flex gap={"lg"} align={"center"}>
+        <ColorSchemeToggle />
+        <UserButton />
+      </Flex>
     </header>
   );
 }
