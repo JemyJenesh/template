@@ -8,7 +8,7 @@
     "build": "vite build",
     "check-types": "tsc --noEmit",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "start": "vite preview"
   },
   "dependencies": {
     "@mantine/core": "^8.2.3",

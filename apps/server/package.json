@@ -5,7 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsup",
+    "copy-assets": "cp -r ./static ./dist/static",
+    "build": "tsup && pnpm run copy-assets",
     "check-types": "tsc --noEmit",
     "dev": "tsup src/index.ts --watch --onSuccess \"node --env-file=.env dist/index.js\"",
     "start": "node --env-file=.env dist/index.js",
@@ -22,12 +23,15 @@
   "dependencies": {
     "@prisma/client": "^6.13.0",
     "better-auth": "^1.3.4",
+    "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
     "@types/node": "^24.2.0",
     "prisma": "^6.13.0",
     "tsup": "^8.5.0",
