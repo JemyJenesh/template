@@ -1,18 +1,24 @@
-import { useEffect } from "react";
-import { axiosInstance } from "./lib";
+import { PublicRoute } from "@/components";
+import { useAuth } from "@/hooks";
+import { HomePage, LoginPage } from "@/pages";
+import { Route, Routes } from "react-router";
 
 const App = () => {
-  useEffect(() => {
-    const fetchStatus = async () => {
-      const data = await axiosInstance.get("/status");
+  const { loading } = useAuth();
 
-      console.log(data);
-    };
+  if (loading) {
+    return "Loading...";
+  }
 
-    fetchStatus();
-  }, []);
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
 
-  return <div>App</div>;
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<LoginPage />} />
+      </Route>
+    </Routes>
+  );
 };
 
 export default App;
