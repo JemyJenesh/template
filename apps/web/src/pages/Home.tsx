@@ -1,9 +1,9 @@
-import { Navbar } from "@/components";
+import { Text } from "@mantine/core";
 
 export const HomePage = () => {
   return (
     <div>
-      <Navbar />
+      <Text h={1}>Home page</Text>
     </div>
   );
 };

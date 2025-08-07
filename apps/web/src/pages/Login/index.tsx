@@ -45,7 +45,7 @@ export const LoginPage = () => {
         setLoading(true);
       },
       onSuccess: () => {
-        navigate("/");
+        navigate("/dashboard");
       },
       onError: (ctx) => {
         if (ctx.error.status === 401) {
