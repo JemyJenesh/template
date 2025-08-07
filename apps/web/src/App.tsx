@@ -1,7 +1,7 @@
 import { PrivateRoute, PublicRoute } from "@/components";
 import { useAuth } from "@/hooks";
-import { DashboardLayout } from "@/layouts";
-import { HomePage, LoginPage } from "@/pages";
+import { DashboardLayout, PublicLayout } from "@/layouts";
+import { HomePage, LoginPage, NotFoundPage } from "@/pages";
 import DashboardPage from "@/pages/Dashboard";
 import { LoadingOverlay } from "@mantine/core";
 import { Route, Routes } from "react-router";
@@ -10,15 +10,20 @@ const App = () => {
   const { loading } = useAuth();
 
   if (loading) {
-    return <LoadingOverlay visible />;
+    return <LoadingOverlay visible loaderProps={{ type: "bars" }} />;
   }
 
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<HomePage />} />
+      </Route>
 
       <Route element={<PublicRoute />}>
-        <Route path="/login" element={<LoginPage />} />
+        <Route element={<PublicLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<HomePage />} />
+        </Route>
       </Route>
 
       <Route element={<PrivateRoute />}>
@@ -26,6 +31,8 @@ const App = () => {
           <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
       </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };
