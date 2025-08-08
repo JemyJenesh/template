@@ -10,7 +10,18 @@ import App from "./App.tsx";
 import "./index.css";
 
 const theme = createTheme({
-  /** Put your mantine theme override here */
+  components: {
+    Table: {
+      styles: {
+        td: {
+          verticalAlign: "top",
+        },
+        th: {
+          verticalAlign: "top",
+        },
+      },
+    },
+  },
 });
 
 const queryClient = new QueryClient();

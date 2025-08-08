@@ -1,7 +1,7 @@
 import { PrivateRoute, PublicRoute } from "@/components";
 import { useAuth } from "@/hooks";
 import { DashboardLayout, PublicLayout } from "@/layouts";
-import { HomePage, LoginPage, NotFoundPage } from "@/pages";
+import { CategoriesPage, HomePage, LoginPage, NotFoundPage } from "@/pages";
 import DashboardPage from "@/pages/Dashboard";
 import { LoadingOverlay } from "@mantine/core";
 import { Route, Routes } from "react-router";
@@ -29,6 +29,7 @@ const App = () => {
       <Route element={<PrivateRoute />}>
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/categories" element={<CategoriesPage />} />
         </Route>
       </Route>
 
