@@ -15,7 +15,12 @@ import classes from "./style.module.css";
 
 const navigation = [
   { label: "Dashboard", icon: IconGauge, link: "/dashboard" },
-  { label: "Categories", icon: IconCategory, link: "/categories" },
+  {
+    label: "Categories",
+    icon: IconCategory,
+    link: "/categories",
+    matchUrl: "/categories/*",
+  },
   {
     label: "Market news",
     icon: IconNotes,

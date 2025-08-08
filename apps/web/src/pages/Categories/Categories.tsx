@@ -80,7 +80,12 @@ export function CategoriesPage() {
           Categories
         </Title>
 
-        <Button ml="auto" leftSection={<IconPlus size={14} />}>
+        <Button
+          ml="auto"
+          leftSection={<IconPlus size={14} />}
+          component={Link}
+          to="/categories/new"
+        >
           New
         </Button>
       </Flex>
