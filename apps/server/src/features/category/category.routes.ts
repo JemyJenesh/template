@@ -12,8 +12,8 @@ const router = Router();
 
 router.post(
   "/",
-  validateRequestPayload({ body: categoryCreateInputSchema }),
   upload.single("image"),
+  validateRequestPayload({ body: categoryCreateInputSchema }),
   categoryController.create
 );
 
@@ -27,6 +27,7 @@ router.get("/:id", categoryController.getOne);
 
 router.put(
   "/",
+  upload.single("image"),
   validateRequestPayload({ body: categoryUpdateInputSchema }),
   categoryController.update
 );

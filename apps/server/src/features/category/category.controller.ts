@@ -64,7 +64,16 @@ const controller = {
 
     if (updated) {
       if (updated.mediaId && filePath) {
-        await mediaService.update(updated.mediaId, filePath, folder);
+        const media = await mediaService.update(
+          updated.mediaId,
+          filePath,
+          folder
+        );
+
+        return res.json({
+          ...updated,
+          media,
+        });
       }
 
       res.json(updated);

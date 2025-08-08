@@ -69,12 +69,12 @@ model Verification {
 }
 
 model Media {
-  id        String     @id @default(uuid())
-  url       String
-  publicId  String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Category  Category[]
+  id         String     @id @default(uuid())
+  url        String
+  publicId   String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  categories Category[]
 }
 
 model Category {
@@ -86,6 +86,6 @@ model Category {
   subCategories Category[] @relation("ParentCategory")
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
-  Media         Media?     @relation(fields: [mediaId], references: [id])
+  media         Media?     @relation(fields: [mediaId], references: [id])
   mediaId       String?
 }

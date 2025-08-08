@@ -14,19 +14,38 @@ const service = {
     return media;
   },
 
-  delete: async (mediaId: string) => {
+  delete: async (id: string) => {
     const media = await prismaClient.media.findUnique({
-      where: { id: mediaId },
+      where: { id },
     });
-    if (!media) return;
+
+    if (!media || media.publicId === "default") return;
 
     await cloudinaryMediaProvider.delete(media.publicId);
-    await prismaClient.media.delete({ where: { id: mediaId } });
+    await prismaClient.media.delete({ where: { id } });
   },
 
-  update: async (oldMediaId: string, newFilePath: string, folder: string) => {
-    await service.delete(oldMediaId);
-    return service.create(newFilePath, folder);
+  update: async (id: string, newFilePath: string, folder: string) => {
+    const media = await prismaClient.media.findUnique({
+      where: { id },
+    });
+
+    if (media) {
+      await cloudinaryMediaProvider.delete(media?.publicId);
+      const uploaded = await cloudinaryMediaProvider.upload(
+        newFilePath,
+        folder
+      );
+
+      return prismaClient.media.update({
+        where: { id },
+        data: {
+          ...media,
+          publicId: uploaded.publicId,
+          url: uploaded.url,
+        },
+      });
+    }
   },
 };
 

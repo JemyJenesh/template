@@ -9,11 +9,25 @@ const service = {
   create: async (data: CategoryCreateInput) => {
     return await prismaClient.category.create({
       data,
+      include: {
+        media: true,
+      },
     });
   },
 
   delete: async (id: string) => {
-    return await prismaClient.category.delete({ where: { id } });
+    return await prismaClient.$transaction(async (tx) => {
+      const beforeDelete = await tx.category.findUnique({
+        where: { id },
+        select: { id: true, mediaId: true },
+      });
+
+      const deleted = await tx.category.delete({
+        where: { id },
+      });
+
+      return { ...deleted, mediaId: beforeDelete?.mediaId };
+    });
   },
 
   getAll: async (filters: Filter) => {
@@ -38,6 +52,7 @@ const service = {
               name: "asc",
             },
           },
+          media: true,
         },
       }),
       prismaClient.category.count({ where }),
@@ -57,13 +72,19 @@ const service = {
   },
 
   getOne: async (id: string) => {
-    return await prismaClient.category.findUnique({ where: { id } });
+    return await prismaClient.category.findUnique({
+      where: { id },
+      include: { media: true },
+    });
   },
 
   update: async (data: CategoryUpdateInput) => {
     return await prismaClient.category.update({
       where: { id: data.id },
       data,
+      include: {
+        media: true,
+      },
     });
   },
 };
