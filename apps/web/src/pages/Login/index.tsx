@@ -91,7 +91,7 @@ export const LoginPage = () => {
             mt="xl"
             size="md"
             key={form.key("rememberMe")}
-            {...form.getInputProps("rememberMe")}
+            {...form.getInputProps("rememberMe", { type: "checkbox" })}
           />
           <Button
             type="submit"
