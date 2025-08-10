@@ -12,8 +12,13 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import type { Category, CategoryGetAllResponse } from "@repo/shared/schemas";
+import {
+  categoryCreateInputSchema,
+  type Category,
+  type CategoryGetAllResponse,
+} from "@repo/shared/schemas";
 import { IconUpload } from "@tabler/icons-react";
+import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useNavigate } from "react-router";
 
 type CategoryFormProps = {
@@ -45,12 +50,10 @@ export function CategoryForm({
           name: "",
           description: "",
           image: null,
-          parentId: null,
+          parentId: undefined,
         },
 
-    validate: {
-      name: (value) => (value.length > 0 ? null : "Name is required"),
-    },
+    validate: zod4Resolver(categoryCreateInputSchema),
   });
 
   const { data, isPending, isError } = useGetAll<CategoryGetAllResponse>({
@@ -113,6 +116,7 @@ export function CategoryForm({
                 label: item.name,
               }))}
               {...form.getInputProps("parentId")}
+              onChange={(val) => form.setFieldValue("parentId", val ?? "")}
             />
           </Grid.Col>
           <Grid.Col span={6}>
