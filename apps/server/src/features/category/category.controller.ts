@@ -60,23 +60,26 @@ const controller = {
     const filePath = req.file?.path;
     const folder = "categories";
 
-    const updated = await categoryService.update(req.body);
+    const currentCategory = await categoryService.getOne(req.body.id);
 
-    if (updated) {
-      if (updated.mediaId && filePath) {
-        const media = await mediaService.update(
-          updated.mediaId,
-          filePath,
-          folder
-        );
+    if (currentCategory) {
+      if (filePath && currentCategory.media) {
+        const media =
+          currentCategory.media?.publicId !== "category/default"
+            ? await mediaService.update(
+                currentCategory.media.id,
+                filePath,
+                folder
+              )
+            : await mediaService.create(filePath, folder);
 
-        return res.json({
-          ...updated,
-          media,
+        const updated = await categoryService.update({
+          ...req.body,
+          mediaId: media?.id,
         });
-      }
 
-      res.json(updated);
+        res.json(updated);
+      }
     } else {
       res.status(404).json({ error: "Category not found" });
     }

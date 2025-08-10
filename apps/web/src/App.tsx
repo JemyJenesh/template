@@ -4,6 +4,7 @@ import { DashboardLayout, PublicLayout } from "@/layouts";
 import {
   CategoriesPage,
   CategoryCreatePage,
+  CategoryEditPage,
   CategoryViewPage,
   DashboardPage,
   HomePage,
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/categories/new" element={<CategoryCreatePage />} />
           <Route path="/categories/:id" element={<CategoryViewPage />} />
+          <Route path="/categories/:id/edit" element={<CategoryEditPage />} />
         </Route>
       </Route>
 

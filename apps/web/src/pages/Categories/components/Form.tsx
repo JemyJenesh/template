@@ -11,23 +11,41 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import type { CategoryGetAllResponse } from "@repo/shared/schemas";
+import type { Category, CategoryGetAllResponse } from "@repo/shared/schemas";
 import { IconUpload } from "@tabler/icons-react";
+import { useNavigate } from "react-router";
 
 type CategoryFormProps = {
   loading: boolean;
+  actionLabel?: string;
+  category?: Category;
   onSubmit: (data: FormData) => void;
 };
 
-export function CategoryForm({ loading, onSubmit }: CategoryFormProps) {
+export function CategoryForm({
+  loading,
+  category,
+  actionLabel = "Submit",
+  onSubmit,
+}: CategoryFormProps) {
+  const navigate = useNavigate();
+
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: {
-      name: "",
-      description: "",
-      image: null,
-      parentId: null,
-    },
+    initialValues: category
+      ? {
+          id: category.id,
+          name: category.name,
+          description: category.description,
+          parentId: category.parentId,
+          image: null,
+        }
+      : {
+          name: "",
+          description: "",
+          image: null,
+          parentId: null,
+        },
 
     validate: {
       name: (value) => (value.length > 0 ? null : "Name is required"),
@@ -50,6 +68,9 @@ export function CategoryForm({ loading, onSubmit }: CategoryFormProps) {
 
     formData.append("name", values.name);
 
+    if (values.id) {
+      formData.append("id", values.id);
+    }
     if (values.description) {
       formData.append("description", values.description);
     }
@@ -115,7 +136,10 @@ export function CategoryForm({ loading, onSubmit }: CategoryFormProps) {
         </Grid>
 
         <Group justify="flex-end" mt="md">
-          <Button type="submit">Create</Button>
+          <Button variant="default" onClick={() => navigate(-1)}>
+            Cancel
+          </Button>
+          <Button type="submit">{actionLabel}</Button>
         </Group>
       </form>
     </Box>

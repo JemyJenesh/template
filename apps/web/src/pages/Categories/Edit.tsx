@@ -1,18 +1,25 @@
-import { useCreateOne } from "@/hooks";
+import { useEditOne, useGetOne } from "@/hooks";
 import { CategoryForm } from "@/pages/Categories/components";
-import { Container, Title } from "@mantine/core";
+import { Container, Text, Title } from "@mantine/core";
 import type { Category } from "@repo/shared/schemas";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 export function CategoryEditPage() {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
-  const { mutate, isPending } = useCreateOne<Category, FormData>({
+  const { data, isPending, isError } = useGetOne<Category>({
+    id: id!,
+    path: `/categories/${id}`,
+    queryKey: "categories-view",
+  });
+
+  const { mutate, isPending: isUpdating } = useEditOne<Category, FormData>({
     path: "/categories",
     queryKey: "categories",
     message: {
-      success: "Category created successfully.",
-      error: "Error while creating the category.",
+      success: "Category updated successfully.",
+      error: "Error while updating the category.",
     },
   });
 
@@ -24,13 +31,34 @@ export function CategoryEditPage() {
     });
   };
 
+  if (isPending) {
+    return (
+      <Container>
+        <Text>Loading...</Text>
+      </Container>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Container>
+        <Text>Error...</Text>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <Title size={"h2"} mb={"md"}>
-        New category
+        Edit category
       </Title>
 
-      <CategoryForm onSubmit={onSubmit} loading={isPending} />
+      <CategoryForm
+        category={data}
+        onSubmit={onSubmit}
+        actionLabel="Update"
+        loading={isUpdating}
+      />
     </Container>
   );
 }

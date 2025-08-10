@@ -13,7 +13,7 @@ import {
   Title,
 } from "@mantine/core";
 import type { CategoryGetAllResponse } from "@repo/shared/schemas";
-import { IconEdit, IconEye, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import { Link } from "react-router";
 
 export function CategoriesPage() {
@@ -56,10 +56,11 @@ export function CategoriesPage() {
       </Table.Td>
       <Table.Td>
         <Flex gap={"md"}>
-          <ActionIcon variant="subtle" color="green">
-            <IconEye />
-          </ActionIcon>
-          <ActionIcon variant="subtle">
+          <ActionIcon
+            variant="subtle"
+            component={Link}
+            to={`/categories/${row.id}/edit`}
+          >
             <IconEdit />
           </ActionIcon>
           <ActionIcon variant="subtle" color="red">
@@ -97,7 +98,7 @@ export function CategoriesPage() {
             <Table.Th w={80}>Image</Table.Th>
             <Table.Th>Name</Table.Th>
             <Table.Th>Subcategories</Table.Th>
-            <Table.Th w={140}>Actions</Table.Th>
+            <Table.Th w={110}>Actions</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>
