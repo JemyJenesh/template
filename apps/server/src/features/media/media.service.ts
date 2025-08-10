@@ -19,7 +19,7 @@ const service = {
       where: { id },
     });
 
-    if (!media || media.publicId === "default") return;
+    if (!media) return;
 
     await cloudinaryMediaProvider.delete(media.publicId);
     await prismaClient.media.delete({ where: { id } });

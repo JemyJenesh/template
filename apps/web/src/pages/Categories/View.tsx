@@ -1,5 +1,6 @@
 import { PageError } from "@/components";
 import { useDeleteOne, useGetOne } from "@/hooks";
+import { APP_CONFIG } from "@/lib";
 import {
   Anchor,
   Box,
@@ -100,7 +101,15 @@ export function CategoryViewPage() {
 
       <Paper withBorder shadow="sm" p="xl" radius="md">
         <Flex gap={"xl"} mb={"lg"}>
-          <Image w={100} h={100} src={data.media?.url} />
+          <Image
+            w={100}
+            h={100}
+            src={
+              data.media
+                ? data.media.url
+                : APP_CONFIG.DEFAULT_CATEGORY_IMAGE_URL
+            }
+          />
 
           <Box>
             <Text fw={500} c="dimmed" size="sm">

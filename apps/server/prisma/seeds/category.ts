@@ -382,61 +382,24 @@ const data = [
 ];
 
 export const seedCategories = async () => {
-  const defaultMedia = await prismaClient.media.create({
-    data: {
-      publicId: "category/default",
-      url: `${process.env.BASE_URL}/static/images/meal.jpg`,
-    },
-  });
-
   for (const item of data) {
     const category = await prismaClient.category.create({
       data: {
         name: item.name,
         description: item.description,
-        mediaId: defaultMedia.id,
       },
     });
 
     if (item.subcategories) {
       for (const itemSubCategory of item.subcategories) {
-        const subCategory = await prismaClient.category.create({
+        await prismaClient.category.create({
           data: {
             name: itemSubCategory.name,
             description: itemSubCategory.description,
             parentId: category.id,
-            mediaId: defaultMedia.id,
           },
         });
-
-        // for (const menuItem of itemSubCategory.items) {
-        //   await prismaClient.menuItem.create({
-        //     data: {
-        //       name: menuItem.name,
-        //       categoryId: subCategory.id,
-        //       priceVariants: {
-        //         createMany: {
-        //           data: menuItem.variants,
-        //         },
-        //       },
-        //     },
-        //   });
-        // }
       }
-    } else {
-      // for (const menuItem of item.items) {
-      //   await prismaClient.menuItem.create({
-      //     data: {
-      //       name: menuItem.name,
-      //       categoryId: category.id,
-      //       priceVariants: {
-      //         createMany: {
-      //           data: menuItem.variants,
-      //         },
-      //       },
-      //     },
-      //   });
-      // }
     }
   }
 };

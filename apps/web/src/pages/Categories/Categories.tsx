@@ -1,5 +1,6 @@
 import { PageError } from "@/components";
 import { useDeleteOne, useGetAll } from "@/hooks";
+import { APP_CONFIG } from "@/lib";
 import {
   ActionIcon,
   Anchor,
@@ -57,7 +58,15 @@ export function CategoriesPage() {
   const rows = data?.data.map((row) => (
     <Table.Tr key={row.name}>
       <Table.Td>
-        <Image mt={5} radius="md" src={row.media?.url} h={50} w={50} />
+        <Image
+          mt={5}
+          radius="md"
+          src={
+            row.media ? row.media.url : APP_CONFIG.DEFAULT_CATEGORY_IMAGE_URL
+          }
+          h={50}
+          w={50}
+        />
       </Table.Td>
       <Table.Td>
         <Stack gap={0} align="start">

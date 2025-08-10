@@ -11,7 +11,7 @@ const controller = {
     try {
       const media = filePath
         ? await mediaService.create(filePath, folder)
-        : await categoryService.getDefaultMedia();
+        : null;
 
       const input: CategoryCreateInput = {
         ...req.body,
@@ -64,14 +64,13 @@ const controller = {
 
     if (currentCategory) {
       if (filePath && currentCategory.media) {
-        const media =
-          currentCategory.media?.publicId !== "category/default"
-            ? await mediaService.update(
-                currentCategory.media.id,
-                filePath,
-                folder
-              )
-            : await mediaService.create(filePath, folder);
+        const media = currentCategory.media
+          ? await mediaService.update(
+              currentCategory.media.id,
+              filePath,
+              folder
+            )
+          : await mediaService.create(filePath, folder);
 
         const updated = await categoryService.update({
           ...req.body,
