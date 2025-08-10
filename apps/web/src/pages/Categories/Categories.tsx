@@ -1,5 +1,5 @@
 import { PageError } from "@/components";
-import { useGetAll } from "@/hooks";
+import { useDeleteOne, useGetAll } from "@/hooks";
 import {
   ActionIcon,
   Anchor,
@@ -14,7 +14,8 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import type { CategoryGetAllResponse } from "@repo/shared/schemas";
+import { modals } from "@mantine/modals";
+import type { Category, CategoryGetAllResponse } from "@repo/shared/schemas";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import { Link } from "react-router";
 
@@ -29,6 +30,29 @@ export function CategoriesPage() {
       sortOrder: "asc",
     },
   });
+
+  const { mutate } = useDeleteOne({
+    path: "/categories",
+    queryKey: "categories",
+    message: {
+      success: "Category deleted successfully.",
+      error: "Error while deleting the category.",
+    },
+  });
+
+  const handleDelete = (category: Category) =>
+    modals.openConfirmModal({
+      title: `Are you sure you want to delete ${category.name}?`,
+      children: (
+        <Text size="sm">
+          This action cannot be undone. This will permanently delete the
+          category.
+        </Text>
+      ),
+      labels: { confirm: "Confirm", cancel: "Delete" },
+      confirmProps: { color: "red" },
+      onConfirm: () => mutate({ id: category.id }),
+    });
 
   const rows = data?.data.map((row) => (
     <Table.Tr key={row.name}>
@@ -65,7 +89,11 @@ export function CategoriesPage() {
           >
             <IconEdit />
           </ActionIcon>
-          <ActionIcon variant="subtle" color="red">
+          <ActionIcon
+            variant="subtle"
+            color="red"
+            onClick={() => handleDelete(row)}
+          >
             <IconTrash />
           </ActionIcon>
         </Flex>

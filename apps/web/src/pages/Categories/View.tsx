@@ -1,5 +1,5 @@
 import { PageError } from "@/components";
-import { useGetOne } from "@/hooks";
+import { useDeleteOne, useGetOne } from "@/hooks";
 import {
   Anchor,
   Box,
@@ -15,6 +15,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import type { Category } from "@repo/shared/schemas";
 import { IconArrowLeft, IconEdit } from "@tabler/icons-react";
 import { Link, useNavigate, useParams } from "react-router";
@@ -28,6 +29,30 @@ export function CategoryViewPage() {
     path: `/categories/${id}`,
     queryKey: "categories-view",
   });
+
+  const { mutate, isPending: isDeleting } = useDeleteOne({
+    path: "/categories",
+    queryKey: "categories",
+    message: {
+      success: "Category deleted successfully.",
+      error: "Error while deleting the category.",
+    },
+    redirect: "/categories",
+  });
+
+  const handleDelete = () =>
+    modals.openConfirmModal({
+      title: `Are you sure you want to delete ${data?.name}?`,
+      children: (
+        <Text size="sm">
+          This action cannot be undone. This will permanently delete the
+          category.
+        </Text>
+      ),
+      labels: { confirm: "Confirm", cancel: "Delete" },
+      confirmProps: { color: "red" },
+      onConfirm: () => mutate({ id: id! }),
+    });
 
   if (isPending) {
     return (
@@ -55,7 +80,13 @@ export function CategoryViewPage() {
           {data.name}
         </Title>
 
-        <Button ml={"auto"} leftSection={<IconEdit size={16} />} color="red">
+        <Button
+          ml={"auto"}
+          leftSection={<IconEdit size={16} />}
+          color="red"
+          loading={isDeleting}
+          onClick={handleDelete}
+        >
           Delete
         </Button>
 
