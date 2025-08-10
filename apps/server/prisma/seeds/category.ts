@@ -384,7 +384,7 @@ const data = [
 export const seedCategories = async () => {
   const defaultMedia = await prismaClient.media.create({
     data: {
-      publicId: "default",
+      publicId: "category/default",
       url: `${process.env.BASE_URL}/static/images/meal.jpg`,
     },
   });

@@ -1,5 +1,6 @@
 import { useGetOne } from "@/hooks";
 import {
+  Anchor,
   Box,
   Button,
   Container,
@@ -13,7 +14,7 @@ import {
 } from "@mantine/core";
 import type { Category } from "@repo/shared/schemas";
 import { IconArrowLeft, IconEdit } from "@tabler/icons-react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 
 export function CategoryViewPage() {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ export function CategoryViewPage() {
           <Image w={100} h={100} src={data.media?.url} />
 
           <Box>
-            <Text fw={500} size="sm" c="dimmed">
+            <Text fw={500} c="dimmed" size="sm">
               Name
             </Text>
             <Title order={2}>{data.name}</Title>
@@ -78,8 +79,21 @@ export function CategoryViewPage() {
 
         {data.description && (
           <Stack gap={0} mt={"lg"}>
-            <Text fw={500}>Description</Text>
-            <Text c="dimmed">{data.description}</Text>
+            <Text fw={500} c="dimmed" size="sm">
+              Description
+            </Text>
+            <Text>{data.description}</Text>
+          </Stack>
+        )}
+
+        {data.parent && (
+          <Stack gap={0} mt={"lg"}>
+            <Text fw={500} c="dimmed" size="sm">
+              Category
+            </Text>
+            <Anchor component={Link} to={`/categories/${data.parent.id}`}>
+              {data.parent.name}
+            </Anchor>
           </Stack>
         )}
       </Paper>

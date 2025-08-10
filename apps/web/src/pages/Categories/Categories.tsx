@@ -46,7 +46,7 @@ export function CategoriesPage() {
         <List>
           {row.subCategories?.map((subcategory) => (
             <List.Item key={subcategory.id}>
-              <Anchor component={Link} to={`/categories/${row.id}`}>
+              <Anchor component={Link} to={`/categories/${subcategory.id}`}>
                 {subcategory.name}
               </Anchor>
             </List.Item>

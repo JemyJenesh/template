@@ -74,7 +74,15 @@ const service = {
   getOne: async (id: string) => {
     return await prismaClient.category.findUnique({
       where: { id },
-      include: { media: true },
+      include: { media: true, parent: true },
+    });
+  },
+
+  getDefaultMedia: async () => {
+    return await prismaClient.media.findFirst({
+      where: {
+        publicId: "category/default",
+      },
     });
   },
 

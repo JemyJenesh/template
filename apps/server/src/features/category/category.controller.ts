@@ -11,7 +11,7 @@ const controller = {
     try {
       const media = filePath
         ? await mediaService.create(filePath, folder)
-        : undefined;
+        : await categoryService.getDefaultMedia();
 
       const input: CategoryCreateInput = {
         ...req.body,
