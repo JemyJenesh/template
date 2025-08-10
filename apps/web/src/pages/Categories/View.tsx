@@ -1,3 +1,4 @@
+import { PageError } from "@/components";
 import { useGetOne } from "@/hooks";
 import {
   Anchor,
@@ -9,6 +10,7 @@ import {
   Image,
   List,
   Paper,
+  Skeleton,
   Stack,
   Text,
   Title,
@@ -30,18 +32,13 @@ export function CategoryViewPage() {
   if (isPending) {
     return (
       <Container>
-        <Text>Loading...</Text>
+        <Skeleton height={50} mb="md" />
+        <Skeleton height={"30vh"} />
       </Container>
     );
   }
 
-  if (isError) {
-    return (
-      <Container>
-        <Text>Error...</Text>
-      </Container>
-    );
-  }
+  if (isError) return <PageError />;
 
   return (
     <Container>

@@ -1,3 +1,4 @@
+import { PageError } from "@/components";
 import { useGetAll } from "@/hooks";
 import {
   Box,
@@ -84,9 +85,7 @@ export function CategoryForm({
     onSubmit(formData);
   });
 
-  if (isError) {
-    return "error";
-  }
+  if (isError) return <PageError />;
 
   return (
     <Box pos="relative">

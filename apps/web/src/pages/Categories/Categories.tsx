@@ -1,3 +1,4 @@
+import { PageError } from "@/components";
 import { useGetAll } from "@/hooks";
 import {
   ActionIcon,
@@ -7,6 +8,7 @@ import {
   Flex,
   Image,
   List,
+  Skeleton,
   Stack,
   Table,
   Text,
@@ -71,9 +73,16 @@ export function CategoriesPage() {
     </Table.Tr>
   ));
 
-  if (isPending) return "...";
+  if (isPending) {
+    return (
+      <Container>
+        <Skeleton height={50} mb="md" />
+        <Skeleton height={"70vh"} />
+      </Container>
+    );
+  }
 
-  if (isError) return "...error";
+  if (isError) return <PageError />;
 
   return (
     <Container>

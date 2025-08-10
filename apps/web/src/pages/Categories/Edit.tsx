@@ -1,6 +1,7 @@
+import { PageError } from "@/components";
 import { useEditOne, useGetOne } from "@/hooks";
 import { CategoryForm } from "@/pages/Categories/components";
-import { Container, Text, Title } from "@mantine/core";
+import { Container, Skeleton, Title } from "@mantine/core";
 import type { Category } from "@repo/shared/schemas";
 import { useNavigate, useParams } from "react-router";
 
@@ -34,18 +35,13 @@ export function CategoryEditPage() {
   if (isPending) {
     return (
       <Container>
-        <Text>Loading...</Text>
+        <Skeleton height={50} mb="md" />
+        <Skeleton height={"30vh"} />
       </Container>
     );
   }
 
-  if (isError) {
-    return (
-      <Container>
-        <Text>Error...</Text>
-      </Container>
-    );
-  }
+  if (isError) return <PageError />;
 
   return (
     <Container>
