@@ -21,7 +21,7 @@ export function CategoriesPage() {
     queryKey: "categories",
     queryParams: {
       page: 1,
-      pageSize: 10,
+      pageSize: 50,
       sortBy: "name",
       sortOrder: "asc",
     },

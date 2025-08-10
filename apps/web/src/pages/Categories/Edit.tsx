@@ -4,7 +4,7 @@ import { Container, Title } from "@mantine/core";
 import type { Category } from "@repo/shared/schemas";
 import { useNavigate } from "react-router";
 
-export function CategoryCreatePage() {
+export function CategoryEditPage() {
   const navigate = useNavigate();
 
   const { mutate, isPending } = useCreateOne<Category, FormData>({
