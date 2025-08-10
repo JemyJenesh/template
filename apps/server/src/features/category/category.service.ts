@@ -74,7 +74,15 @@ const service = {
   getOne: async (id: string) => {
     return await prismaClient.category.findUnique({
       where: { id },
-      include: { media: true, parent: true },
+      include: {
+        media: true,
+        parent: true,
+        subCategories: {
+          orderBy: {
+            name: "asc",
+          },
+        },
+      },
     });
   },
 

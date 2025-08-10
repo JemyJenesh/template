@@ -3,6 +3,7 @@ import {
   ActionIcon,
   Anchor,
   Button,
+  Container,
   Flex,
   Image,
   List,
@@ -74,7 +75,7 @@ export function CategoriesPage() {
   if (isError) return "...error";
 
   return (
-    <div>
+    <Container>
       <Flex gap={"md"}>
         <Title order={1} size={"h2"}>
           Categories
@@ -101,6 +102,6 @@ export function CategoriesPage() {
         </Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>
       </Table>
-    </div>
+    </Container>
   );
 }
