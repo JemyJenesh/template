@@ -1,18 +1,18 @@
-import { PrismaClient } from "@prisma/client";
+import { prismaClient } from "@/lib";
+import { seedCategories } from "./category";
 import { seedUsers } from "./user";
-
-const prisma = new PrismaClient();
 
 const main = async () => {
   await seedUsers();
+  await seedCategories();
 };
 
 main()
   .then(async () => {
-    await prisma.$disconnect();
+    await prismaClient.$disconnect();
   })
   .catch(async (e) => {
     console.error(e);
-    await prisma.$disconnect();
+    await prismaClient.$disconnect();
     process.exit(1);
   });

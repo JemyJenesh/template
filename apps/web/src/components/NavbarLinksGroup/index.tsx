@@ -8,40 +8,56 @@ import {
 } from "@mantine/core";
 import { IconCalendarStats, IconChevronRight } from "@tabler/icons-react";
 import { useState } from "react";
+import { Link, useMatch, useNavigate } from "react-router";
 import classes from "./style.module.css";
 
 interface LinksGroupProps {
   icon: React.FC<any>;
   label: string;
   initiallyOpened?: boolean;
+  link?: string;
   links?: { label: string; link: string }[];
+  matchUrl?: string;
 }
 
 export function LinksGroup({
   icon: Icon,
   label,
   initiallyOpened,
+  link,
   links,
+  matchUrl,
 }: LinksGroupProps) {
+  const navigate = useNavigate();
+  const match = useMatch(matchUrl || link || "");
+
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
-    <Text<"a">
-      component="a"
+    <Text
+      component={Link}
       className={classes.link}
-      href={link.link}
+      to={link.link}
       key={link.label}
-      onClick={(event) => event.preventDefault()}
     >
       {link.label}
     </Text>
   ));
 
+  const onClick = () => {
+    if (link) {
+      navigate(link);
+    } else {
+      setOpened((o) => !o);
+    }
+  };
+
   return (
     <>
       <UnstyledButton
-        onClick={() => setOpened((o) => !o)}
+        onClick={onClick}
         className={classes.control}
+        data-active={!!match}
       >
         <Group justify="space-between" gap={0}>
           <Box style={{ display: "flex", alignItems: "center" }}>

@@ -11,7 +11,7 @@
     var(--mantine-color-white),
     var(--mantine-color-dark-7)
   );
-  z-index: 10000;
+  z-index: 10;
 }
 
 .main {

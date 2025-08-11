@@ -2,6 +2,7 @@ import { ScrollArea } from "@mantine/core";
 import {
   IconAdjustments,
   IconCalendarStats,
+  IconCategory,
   IconFileAnalytics,
   IconGauge,
   IconLock,
@@ -12,8 +13,14 @@ import {
 import { LinksGroup } from "@/components/NavbarLinksGroup";
 import classes from "./style.module.css";
 
-const mockdata = [
-  { label: "Dashboard", icon: IconGauge },
+const navigation = [
+  { label: "Dashboard", icon: IconGauge, link: "/dashboard" },
+  {
+    label: "Categories",
+    icon: IconCategory,
+    link: "/categories",
+    matchUrl: "/categories/*",
+  },
   {
     label: "Market news",
     icon: IconNotes,
@@ -49,7 +56,7 @@ const mockdata = [
 ];
 
 export function Navbar() {
-  const links = mockdata.map((item) => (
+  const links = navigation.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
 

@@ -8,7 +8,7 @@
     "copy-assets": "cp -r ./static ./dist/static",
     "build": "tsup && pnpm run copy-assets",
     "check-types": "tsc --noEmit",
-    "dev": "tsup src/index.ts --watch --onSuccess \"node --env-file=.env dist/index.js\"",
+    "dev": "tsup src/index.ts --watch --onSuccess \"pnpm run copy-assets && node --env-file=.env dist/index.js\"",
     "start": "node --env-file=.env dist/index.js",
     "db:generate": "pnpx prisma generate",
     "db:migrate": "pnpx prisma migrate dev",
@@ -22,11 +22,13 @@
   "packageManager": "pnpm@10.12.4",
   "dependencies": {
     "@prisma/client": "^6.13.0",
+    "@repo/shared": "workspace:*",
     "better-auth": "^1.3.4",
     "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "zod": "^4.0.15"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

@@ -1,10 +1,9 @@
-import { cloudinary, upload } from "@/lib";
 import { auth } from "@/lib/auth";
 import { errorHandler } from "@/middlewares";
+import { router } from "@/router";
 import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import express, { type Express } from "express";
-import fs from "fs";
 
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -38,36 +37,7 @@ export const createServer = (): Express => {
     });
   });
 
-  app.post("/api/users", upload.single("image"), async (req, res) => {
-    const filePath = req.file?.path;
-    const folder = "users";
-
-    if (!filePath) {
-      return res.status(400).json({ error: "No file uploaded" });
-    }
-
-    try {
-      const result = await cloudinary.uploader.upload(filePath, {
-        folder,
-        use_filename: true,
-        unique_filename: false,
-      });
-
-      // Remove temp file
-      fs.unlinkSync(filePath);
-
-      return res.json({
-        message: "Upload successful",
-        url: result.secure_url,
-        public_id: result.public_id,
-      });
-    } catch (error) {
-      console.error("Upload error:", error);
-
-      return res.status(500).json({ error: "Cloudinary upload failed" });
-    }
-  });
-
+  app.use("/api", router);
   app.use(errorHandler);
 
   return app;
