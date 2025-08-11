@@ -9,6 +9,7 @@ import {
   Flex,
   Image,
   List,
+  Pagination,
   Skeleton,
   Stack,
   Table,
@@ -18,15 +19,17 @@ import {
 import { modals } from "@mantine/modals";
 import type { Category, CategoryGetAllResponse } from "@repo/shared/schemas";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import { useState } from "react";
 import { Link } from "react-router";
 
 export function CategoriesPage() {
+  const [page, setPage] = useState(1);
   const { data, isPending, isError } = useGetAll<CategoryGetAllResponse>({
     path: "/categories",
     queryKey: "categories",
     queryParams: {
-      page: 1,
-      pageSize: 50,
+      page,
+      pageSize: 5,
       sortBy: "name",
       sortOrder: "asc",
     },
@@ -149,6 +152,14 @@ export function CategoriesPage() {
         </Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>
       </Table>
+
+      <Flex justify="end" mt="md">
+        <Pagination
+          total={data.meta.totalPages}
+          value={page}
+          onChange={setPage}
+        />
+      </Flex>
     </Container>
   );
 }

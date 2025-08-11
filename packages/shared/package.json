@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./config": {
+      "import": "./dist/config/index.mjs",
+      "types": "./dist/config/index.d.ts"
+    },
     "./schemas": {
       "import": "./dist/schema/index.mjs",
       "types": "./dist/schema/index.d.ts"
