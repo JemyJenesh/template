@@ -18,20 +18,30 @@ import {
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import type { Category, CategoryGetAllResponse } from "@repo/shared/schemas";
-import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconEdit,
+  IconPlus,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useState } from "react";
 import { Link } from "react-router";
 
 export function CategoriesPage() {
   const [page, setPage] = useState(1);
+
+  const [sortBy, setSortBy] = useState<keyof Category>("name");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
   const { data, isPending, isError } = useGetAll<CategoryGetAllResponse>({
     path: "/categories",
     queryKey: "categories",
     queryParams: {
       page,
-      pageSize: 5,
-      sortBy: "name",
-      sortOrder: "asc",
+      pageSize: 50,
+      sortBy,
+      sortOrder,
     },
   });
 
@@ -58,7 +68,37 @@ export function CategoriesPage() {
       onConfirm: () => mutate({ id: category.id }),
     });
 
-  const rows = data?.data.map((row) => (
+  const handleSort = (column: keyof Category) => {
+    if (sortBy === column) {
+      setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+    setPage(1);
+  };
+
+  const renderSortIcon = (column: keyof Category) => {
+    if (sortBy !== column) return null;
+    return sortOrder === "asc" ? (
+      <IconChevronUp size={14} />
+    ) : (
+      <IconChevronDown size={14} />
+    );
+  };
+
+  if (isPending) {
+    return (
+      <Container>
+        <Skeleton height={50} mb="md" />
+        <Skeleton height={"70vh"} />
+      </Container>
+    );
+  }
+
+  if (isError) return <PageError />;
+
+  const rows = data.data.map((row) => (
     <Table.Tr key={row.name}>
       <Table.Td>
         <Image
@@ -113,17 +153,6 @@ export function CategoriesPage() {
     </Table.Tr>
   ));
 
-  if (isPending) {
-    return (
-      <Container>
-        <Skeleton height={50} mb="md" />
-        <Skeleton height={"70vh"} />
-      </Container>
-    );
-  }
-
-  if (isError) return <PageError />;
-
   return (
     <Container>
       <Flex gap={"md"}>
@@ -145,12 +174,31 @@ export function CategoriesPage() {
         <Table.Thead>
           <Table.Tr>
             <Table.Th w={80}>Image</Table.Th>
-            <Table.Th>Name</Table.Th>
+            <Table.Th
+              onClick={() => handleSort("name")}
+              style={{ cursor: "pointer" }}
+            >
+              <Flex align="center" gap={4}>
+                Name {renderSortIcon("name")}
+              </Flex>
+            </Table.Th>
             <Table.Th>Subcategories</Table.Th>
             <Table.Th w={110}>Actions</Table.Th>
           </Table.Tr>
         </Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
+        <Table.Tbody>
+          {rows.length > 0 ? (
+            rows
+          ) : (
+            <Table.Tr>
+              <Table.Td colSpan={4}>
+                <Text fw={500} ta="center">
+                  No data available
+                </Text>
+              </Table.Td>
+            </Table.Tr>
+          )}
+        </Table.Tbody>
       </Table>
 
       <Flex justify="end" mt="md">
